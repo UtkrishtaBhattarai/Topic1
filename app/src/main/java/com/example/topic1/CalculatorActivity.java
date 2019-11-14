@@ -16,6 +16,7 @@ public class CalculatorActivity extends AppCompatActivity {
     public int textone, texttwo;
     TextView textcheckSum;
     public int symbol = 0;
+    CalculatorClass calculatorClass=new CalculatorClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,8 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 symbol = 1;
-                textone = Integer.parseInt(etdisplay.getText().toString());
+                //calculatorClass.setFirst(Integer.parseInt(etdisplay.getText().toString()));
+               // textone = Integer.parseInt(etdisplay.getText().toString());
                 etdisplay.getText().clear();
                 textcheckSum.setText(textone + "+");
             }
@@ -71,10 +73,22 @@ public class CalculatorActivity extends AppCompatActivity {
                 textcheckSum.setText(textone + "*");
             }
         });
+        btnresult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                symbol = 3;
+                textone = Integer.parseInt(etdisplay.getText().toString());
+                etdisplay.getText().clear();
+                textcheckSum.setText(textone + "/");
+            }
+        });
         btnpoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                divideresult();
+            etdisplay.getText().clear();
+            textone=0;
+            texttwo=0;
+                textcheckSum.setText("");
             }
         });
 
@@ -83,14 +97,18 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 texttwo = Integer.parseInt(etdisplay.getText().toString());
-                hulu();
+
                 if (symbol == 1) {
+                    foradd();
                     addResult();
                 } else if (symbol == 2) {
+                    forsub();
                     subractresult();
                 } else if (symbol == 3) {
+                    formultiply();
                     multiplyresult();
                 } else if (symbol == 4) {
+                    fordivide();
                     divideresult();
                 }
 
@@ -161,8 +179,17 @@ public class CalculatorActivity extends AppCompatActivity {
         });
     }
 
-    public void hulu() {
+    public void foradd() {
         textcheckSum.setText(textone + "+" + texttwo);
+    }
+    public void forsub() {
+        textcheckSum.setText(textone + "-" + texttwo);
+    }
+    public void formultiply() {
+        textcheckSum.setText(textone + "*" + texttwo);
+    }
+    public void fordivide() {
+        textcheckSum.setText(textone + "/" + texttwo);
     }
 
     public void addResult() {
