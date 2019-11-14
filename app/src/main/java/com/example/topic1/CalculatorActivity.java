@@ -3,6 +3,7 @@ package com.example.topic1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,18 +12,18 @@ import android.widget.Toast;
 
 public class CalculatorActivity extends AppCompatActivity {
 
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnpoint, btnresult, btnadd, btnsub, btnmultiply, btndivide, btn0;
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnpoint;
+    Button btnresult, btnadd, btnsub, btnmultiply, btndivide, btn0;
     EditText etdisplay;
     public int textone, texttwo;
     TextView textcheckSum;
     public int symbol = 0;
-    CalculatorClass calculatorClass=new CalculatorClass();
+    CalculatorClass calculatorClass = new CalculatorClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
-
         btn0 = findViewById(R.id.btn0);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
@@ -42,13 +43,20 @@ public class CalculatorActivity extends AppCompatActivity {
         etdisplay = findViewById(R.id.etdisplay);
 
         textcheckSum = findViewById(R.id.sumcheck);
-
+        calculatorClass.setFirst(0);
+        calculatorClass.setSecond(0);
         btnadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (TextUtils.isEmpty(etdisplay.getText())) {
+                    etdisplay.setError("Enter Something to add ");
+                    return;
+                }
+
                 symbol = 1;
-                //calculatorClass.setFirst(Integer.parseInt(etdisplay.getText().toString()));
-               // textone = Integer.parseInt(etdisplay.getText().toString());
+                textone = Integer.parseInt(etdisplay.getText().toString());
+                calculatorClass.setFirst(textone);
                 etdisplay.getText().clear();
                 textcheckSum.setText(textone + "+");
             }
@@ -57,8 +65,13 @@ public class CalculatorActivity extends AppCompatActivity {
         btnsub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(etdisplay.getText())) {
+                    etdisplay.setError("Enter Something to Subract ");
+                    return;
+                }
                 symbol = 2;
                 textone = Integer.parseInt(etdisplay.getText().toString());
+                calculatorClass.setFirst(textone);
                 etdisplay.getText().clear();
                 textcheckSum.setText(textone + "-");
             }
@@ -67,17 +80,27 @@ public class CalculatorActivity extends AppCompatActivity {
         btnmultiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(etdisplay.getText())) {
+                    etdisplay.setError("Enter Something to Multiply ");
+                    return;
+                }
                 symbol = 3;
                 textone = Integer.parseInt(etdisplay.getText().toString());
+                calculatorClass.setFirst(textone);
                 etdisplay.getText().clear();
                 textcheckSum.setText(textone + "*");
             }
         });
-        btnresult.setOnClickListener(new View.OnClickListener() {
+        btndivide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                symbol = 3;
+                if (TextUtils.isEmpty(etdisplay.getText())) {
+                    etdisplay.setError("Enter Something to divide ");
+                    return;
+                }
+                symbol = 4;
                 textone = Integer.parseInt(etdisplay.getText().toString());
+                calculatorClass.setFirst(textone);
                 etdisplay.getText().clear();
                 textcheckSum.setText(textone + "/");
             }
@@ -85,9 +108,9 @@ public class CalculatorActivity extends AppCompatActivity {
         btnpoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            etdisplay.getText().clear();
-            textone=0;
-            texttwo=0;
+                etdisplay.getText().clear();
+                textone = 0;
+                texttwo = 0;
                 textcheckSum.setText("");
             }
         });
@@ -96,20 +119,25 @@ public class CalculatorActivity extends AppCompatActivity {
         btnresult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(etdisplay.getText())) {
+                    etdisplay.setError("Enter Something to add ");
+                    return;
+                }
                 texttwo = Integer.parseInt(etdisplay.getText().toString());
+                calculatorClass.setSecond(texttwo);
 
                 if (symbol == 1) {
-                    foradd();
-                    addResult();
+                    textcheckSum.setText(calculatorClass.foradd());
+                    etdisplay.setText(Integer.toString(calculatorClass.addResult()));
                 } else if (symbol == 2) {
-                    forsub();
-                    subractresult();
+                    textcheckSum.setText(calculatorClass.forsub());
+                    etdisplay.setText(Integer.toString(calculatorClass.subractresult()));
                 } else if (symbol == 3) {
-                    formultiply();
-                    multiplyresult();
+                    textcheckSum.setText(calculatorClass.formultiply());
+                    etdisplay.setText(Integer.toString(calculatorClass.multiplyresult()));
                 } else if (symbol == 4) {
-                    fordivide();
-                    divideresult();
+                    textcheckSum.setText(calculatorClass.fordivide());
+                    etdisplay.setText(Integer.toString(calculatorClass.divideresult()));
                 }
 
 
@@ -179,37 +207,5 @@ public class CalculatorActivity extends AppCompatActivity {
         });
     }
 
-    public void foradd() {
-        textcheckSum.setText(textone + "+" + texttwo);
-    }
-    public void forsub() {
-        textcheckSum.setText(textone + "-" + texttwo);
-    }
-    public void formultiply() {
-        textcheckSum.setText(textone + "*" + texttwo);
-    }
-    public void fordivide() {
-        textcheckSum.setText(textone + "/" + texttwo);
-    }
-
-    public void addResult() {
-        Integer result = textone + texttwo;
-        etdisplay.setText(String.valueOf(result));
-    }
-
-    public void subractresult() {
-        Integer result = textone - texttwo;
-        etdisplay.setText(String.valueOf(result));
-    }
-
-    public void multiplyresult() {
-        Integer result = textone * texttwo;
-        etdisplay.setText(String.valueOf(result));
-    }
-
-    public void divideresult() {
-        Integer result = textone / texttwo;
-        etdisplay.setText(String.valueOf(result));
-    }
 
 }
