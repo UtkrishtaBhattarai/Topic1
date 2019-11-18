@@ -19,8 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:clickable="false"
+        android:enabled="false"
         android:gravity="right"
-        android:textSize="40dp" />
+        android:contextClickable="false"
+        android:textSize="40dp"
+        />
 
     <GridLayout
         android:layout_width="match_parent"
